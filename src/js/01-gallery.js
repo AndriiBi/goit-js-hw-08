@@ -3,11 +3,12 @@ import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 import { galleryItems } from './gallery-items';
 // Change code below this line
+
 const galleryList = document.querySelector(".gallery");
 
 galleryList.insertAdjacentHTML('beforeend', createMarkup(galleryItems));
 
-const lightbox = new SimpleLightbox(".gallery a", {
+new SimpleLightbox(".gallery a", {
     captionsData: "alt",
     captionPosition: "bottom",
     captionDelay: 250

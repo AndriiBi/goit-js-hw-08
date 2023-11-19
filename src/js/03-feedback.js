@@ -12,43 +12,44 @@ refs.form.addEventListener("submit", onFormSubmit)
 
 const onLoadThrottled = throttle(onLoad, THROTTLE_DELAY);
 
-function onFormSubmit(event){
+function onFormSubmit(event) {
     event.preventDefault();
 
-    const email = refs.form.elements.email.value;
-    const message = refs.form.elements.message.value;
-
-    const obj = {
-        email,
-        message,
+    const formData = {
+        email: refs.form.elements.email.value,
+        message: refs.form.elements.message.value,
     };
+
+    if (!formData.email || !formData.message) {
+        alert("Заповніть усі поля!");
+        return;
+    }
+
+    saveToLS('formData', formData);
 
     event.target.reset();
 
-    localStorage.removeItem("email");
-    localStorage.removeItem("message")
+    localStorage.removeItem("formData");
 
-    console.log(obj)
+    console.log(formData);
 }
 
 function onFormInput(event) {
+    const formData = {
+        email: refs.form.elements.email.value,
+        message: refs.form.elements.message.value,
+    };
 
-const key = event.target.name;
-const value = event.target.value;
+    saveToLS('formData', formData);
+}
 
-localStorage.setItem(key, value);
-const data = localStorage.getItem(key);
+function onLoad() {
+    const savedData = LoadFromLS('formData');
 
-saveToLS(key, value)
-};
-
-function onLoad(){
-    const email = LoadFromLS("email");
-    const message = LoadFromLS("message");
-
-    refs.form.elements.email.value = email;
-    refs.form.elements.message.value = message;
+    if (savedData) {
+        refs.form.elements.email.value = savedData.email;
+        refs.form.elements.message.value = savedData.message;
+    }
 }
 
 onLoadThrottled();
-
